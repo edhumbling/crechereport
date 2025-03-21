@@ -7,7 +7,9 @@
     "start": "serve",
     "dev": "serve",
     "preview": "serve",
-    "build": "echo 'No build step required for static site'"
+    "build": "echo 'No build step required for static site'",
+    "netlify:deploy": "netlify deploy",
+    "netlify:deploy:prod": "netlify deploy --prod"
   },
   "keywords": [
     "creche",
@@ -19,5 +21,8 @@
   "license": "MIT",
   "dependencies": {
     "serve": "^14.2.1"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.15.1"
   }
 }

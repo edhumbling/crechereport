@@ -36,11 +36,56 @@ A web application for generating terminal reports for creche students at Edisam 
 ## Local Development
 
 1. Clone the repository
-2. Open index.html in your web browser
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Start the development server:
+   ```
+   npm start
+   ```
+   or
+   ```
+   npm run dev
+   ```
+4. Open your browser and navigate to http://localhost:3000
 
 ## Deployment
 
-This application can be deployed to any static web hosting service like GitHub Pages or Netlify.
+### Deploying to Netlify
+
+#### Option 1: Deploy via Netlify CLI
+
+1. Install Netlify CLI (if not already installed):
+   ```
+   npm install netlify-cli -g
+   ```
+
+2. Login to Netlify:
+   ```
+   netlify login
+   ```
+
+3. Deploy to Netlify:
+   ```
+   npm run netlify:deploy
+   ```
+   This will create a draft deployment.
+
+4. To deploy to production:
+   ```
+   npm run netlify:deploy:prod
+   ```
+
+#### Option 2: Deploy via GitHub
+
+1. Push your code to GitHub
+2. Log in to [Netlify](https://app.netlify.com/)
+3. Click "New site from Git"
+4. Select GitHub as your Git provider
+5. Select your repository
+6. Configure build settings (leave as default)
+7. Click "Deploy site"
 
 ## License
 
