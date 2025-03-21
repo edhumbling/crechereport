@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Report Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header-container">
+            <div class="logo-container">
+                <img id="schoolLogo" src="https://i.postimg.cc/w3CyWzCG/logo.png" alt="School Logo">
+            </div>
+            <div class="school-info">
+                <h1>Edisam Educational Complex</h1>
+                <p>HEMANG-BOTANTIA P.O. BOX KJ 221 KEJETIA – KSI</p>
+                <p>(CONT: 0243756611/ 0556501264 / 0542162399)</p>
+                <p><strong>IN GOD WE TRUST</strong></p>
+                <h2><u>CRECHE TERMINAL REPORT</u></h2>
+            </div>
+        </div>
+        
+        <form id="studentForm" class="form-grid">
+            <div>
+                <label for="startingAdmissionNo">Starting Admission No.:</label>
+                <input type="number" id="startingAdmissionNo" required min="1" class="input">
+            </div>
+            <div>
+                <label for="noOnRoll">No on Roll:</label>
+                <input type="number" id="noOnRoll" required min="1" class="input">
+            </div>
+            <div>
+                <label for="totalAttendance">Total Attendance:</label>
+                <input type="number" id="totalAttendance" required class="input">
+            </div>
+            <div>
+                <label for="academicYear">Academic Year:</label>
+                <select id="academicYear" class="select"></select>
+            </div>
+            <div>
+                <label for="term">Term:</label>
+                <select id="term" class="select">
+                    <option value="Term One (1)">Term One (1)</option>
+                    <option value="Term Two (2)">Term Two (2)</option>
+                    <option value="Term Three (3)">Term Three (3)</option>
+                </select>
+            </div>
+            <div>
+                <label for="nextTermBegins">Next Term Begins:</label>
+                <input type="date" id="nextTermBegins" required class="input">
+            </div>
+            <div>
+                <label for="vacationDate">Vacation Date:</label>
+                <input type="date" id="vacationDate" required class="input">
+            </div>
+            <div>
+                <label for="crecheClass">Creche Class:</label>
+                <select id="crecheClass" class="select">
+                    <option value="Creche A">Creche A</option>
+                    <option value="Creche B">Creche B</option>
+                    <option value="Creche C">Creche C</option>
+                    <option value="Creche D">Creche D</option>
+                </select>
+            </div>
+        </form>
+
+        <button id="giveRemarks" class="btn">Give Remarks</button>
+        <button id="markActivity" class="btn">Mark Activity</button>
+        <button id="uploadPhotos" class="btn">Upload Student Photos</button>
+        <button id="promoteStudents" class="btn">Promote All Students to:</button>
+        <button id="pupilsBill" class="btn">Pupils Bill</button>
+        <button id="uploadTeacherSignature" class="btn">Upload Teacher's Signature</button>
+        <button id="downloadReports" class="btn">Download All Reports</button>
+
+        <h2>Student List</h2>
+        <div style="overflow-x: auto;">
+            <table id="studentTable" class="table">
+                <thead>
+                    <tr>
+                        <th>S/No</th>
+                        <th>Adm. No</th>
+                        <th>Name</th>
+                        <th>Attendance</th>
+                        <th>Promoted to</th>
+                        <th>Rating</th>
+                        <th>Total Bill (GH₵)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Student rows will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Give Remarks Modal -->
+    <div id="remarksModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Give Remarks</h2>
+            <img id="remarksStudentPhoto" src="" alt="Student Photo" style="width: 100px; height: 100px; object-fit: cover; display: none; margin-bottom: 10px;">
+            <div class="modal-grid">
+                <div class="modal-column">
+                    <div id="remarksStudentName" class="student-name-display"></div>
+                    <select id="remarksStudentSelect"></select>
+                    <div class="remarks-item">
+                        <label for="interest">Interest:</label>
+                        <select id="interest"></select>
+                    </div>
+                    <div class="remarks-item">
+                        <label for="attitude">Attitude:</label>
+                        <select id="attitude"></select>
+                    </div>
+                </div>
+                <div class="modal-column">
+                    <div class="remarks-item">
+                        <label for="conduct">Conduct:</label>
+                        <select id="conduct"></select>
+                    </div>
+                    <div class="remarks-item">
+                        <label for="teacherRemarks">Class Teacher's remarks:</label>
+                        <select id="teacherRemarks"></select>
+                    </div>
+                    <div class="remarks-item">
+                        <label for="ratingSelect">Rating:</label>
+                        <select id="ratingSelect"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mark Activity Modal -->
+    <div id="activityModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Mark Activities</h2>
+            <img id="activityStudentPhoto" src="" alt="Student Photo" style="width: 100px; height: 100px; object-fit: cover; display: none; margin-bottom: 10px;">
+            <div class="modal-grid">
+                <div class="modal-column">
+                    <div id="activityStudentName" class="student-name-display"></div>
+                    <select id="studentSelect"></select>
+                </div>
+                <div class="modal-column">
+                    <table id="activityTable" class="activity-table">
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                                <th>Always</th>
+                                <th>Sometimes</th>
+                                <th>Never</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Activity rows will be inserted here -->
+                        </tbody>
+                    </table>
+                    <div id="currentRating" style="font-weight: bold; margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Student Photos Modal -->
+    <div id="photoUploadModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Upload Student Photos</h2>
+            <div id="photoUploadList" class="photo-upload-grid"></div>
+        </div>
+    </div>
+
+    <!-- Promote Students Modal -->
+    <div id="promoteStudentsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Promote Students</h2>
+            <div>
+                <button id="selectAllStudents" class="btn">Select All</button>
+                <select id="promoteAllSelect" class="select">
+                    <option value="N1">N1</option>
+                    <option value="N2">N2</option>
+                    <option value="KG1">KG1</option>
+                    <option value="KG2">KG2</option>
+                    <option value="---">---</option>
+                </select>
+                <button id="populateAllPromotions" class="btn">Populate All</button>
+            </div>
+            <div id="studentPromotionList" class="photo-upload-grid"></div>
+        </div>
+    </div>
+
+    <!-- Pupils Bill Modal -->
+    <div id="pupilsBillModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Pupils Bill</h2>
+            <table id="pupilsBillTable" class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Book Bill (GH₵)</th>
+                        <th>Canteen (GH₵)</th>
+                        <th>Miscellaneous (GH₵)</th>
+                        <th>Total (GH₵)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Pupil bill rows will be inserted here -->
+                </tbody>
+            </table>
+            <button id="populateAllBills" class="btn">Populate All</button>
+        </div>
+    </div>
+
+    <!-- Teacher Signature Modal -->
+    <div id="teacherSignatureModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Upload or Draw Teacher's Signature</h2>
+            <div class="signature-container">
+                <canvas id="signatureCanvas" width="400" height="200"></canvas>
+                <div>
+                    <button id="clearSignature" class="btn">Clear</button>
+                </div>
+            </div>
+            <div class="signature-upload">
+                <input type="file" id="signatureUpload" accept="image/*">
+                <button id="uploadSignatureBtn" class="btn">Upload Signature</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Generative Software by Leading Technologies Ltd - Powering the future of Software and AI</p>
+        <p>Contact: 0208705290 | E-mail: leadtechfuture@gmail.com</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
