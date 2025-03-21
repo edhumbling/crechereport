@@ -74,6 +74,15 @@ const remarksOptions = {
     ]
 };
 
+let schoolInfo = {
+    name: "Edisam Educational Complex",
+    address: "HEMANG-BOTANTIA P.O. BOX KJ 221 KEJETIA – KSI",
+    contact: "(CONT: 0243756611/ 0556501264 / 0542162399)",
+    motto: "IN GOD WE TRUST",
+    reportTitle: "CRECHE TERMINAL REPORT",
+    logo: "https://i.postimg.cc/w3CyWzCG/logo.png"
+};
+
 // DOM Elements
 const studentTable = document.getElementById('studentTable');
 const totalAttendanceInput = document.getElementById('totalAttendance');
@@ -89,6 +98,8 @@ const photoUploadModal = document.getElementById('photoUploadModal');
 const pupilsBillModal = document.getElementById('pupilsBillModal');
 const teacherSignatureModal = document.getElementById('teacherSignatureModal');
 const promoteStudentsModal = document.getElementById('promoteStudentsModal');
+const schoolInfoModal = document.getElementById('schoolInfoModal');
+const logoModal = document.getElementById('logoModal');
 
 // Buttons
 const markActivityBtn = document.getElementById('markActivity');
@@ -113,6 +124,11 @@ const selectAllStudentsBtn = document.getElementById('selectAllStudents');
 const promoteAllSelect = document.getElementById('promoteAllSelect');
 const populateAllPromotionsBtn = document.getElementById('populateAllPromotions');
 const studentPromotionList = document.getElementById('studentPromotionList');
+const editSchoolInfoBtn = document.getElementById('editSchoolInfoBtn');
+const saveSchoolInfoBtn = document.getElementById('saveSchoolInfoBtn');
+const changeLogoBtn = document.getElementById('changeLogoBtn');
+const saveLogoBtn = document.getElementById('saveLogoBtn');
+const logoUpload = document.getElementById('logoUpload');
 
 // Initialize academic year dropdown
 function initAcademicYearDropdown() {
@@ -380,6 +396,8 @@ Array.from(closeBtns).forEach(btn => {
         pupilsBillModal.style.display = 'none';
         teacherSignatureModal.style.display = 'none';
         promoteStudentsModal.style.display = 'none';
+        schoolInfoModal.style.display = 'none';
+        logoModal.style.display = 'none';
     }
 });
 
@@ -391,6 +409,8 @@ window.onclick = function(event) {
     if (event.target == pupilsBillModal) pupilsBillModal.style.display = 'none';
     if (event.target == teacherSignatureModal) teacherSignatureModal.style.display = 'none';
     if (event.target == promoteStudentsModal) promoteStudentsModal.style.display = 'none';
+    if (event.target == schoolInfoModal) schoolInfoModal.style.display = 'none';
+    if (event.target == logoModal) logoModal.style.display = 'none';
 }
 
 // Populate student select dropdown for activity modal
@@ -769,6 +789,122 @@ function initializeSignatureCanvas() {
     }
 }
 
+// Function to initialize modals
+function initializeModals() {
+    // Get all modals
+    const modals = document.querySelectorAll('.modal');
+    
+    // Get all close buttons
+    const closeButtons = document.querySelectorAll('.close');
+    
+    // Add click event to close buttons
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const modal = button.closest('.modal');
+            modal.style.display = 'none';
+        });
+    });
+    
+    // Close modal when clicking outside of it
+    window.addEventListener('click', function(event) {
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+}
+
+// Function to load saved school info
+function loadSchoolInfo() {
+    // Try to load from localStorage
+    const savedInfo = localStorage.getItem('schoolInfo');
+    if (savedInfo) {
+        schoolInfo = JSON.parse(savedInfo);
+        updateSchoolInfoDisplay();
+    }
+}
+
+// Function to update the school info display
+function updateSchoolInfoDisplay() {
+    document.getElementById('schoolName').textContent = schoolInfo.name;
+    document.getElementById('schoolAddress').textContent = schoolInfo.address;
+    document.getElementById('schoolContact').textContent = schoolInfo.contact;
+    document.getElementById('schoolMotto').textContent = schoolInfo.motto;
+    document.getElementById('reportTitle').textContent = schoolInfo.reportTitle;
+    document.getElementById('schoolLogo').src = schoolInfo.logo;
+}
+
+// Function to open the school info modal
+function openSchoolInfoModal() {
+    const modal = document.getElementById('schoolInfoModal');
+    
+    // Populate the form with current values
+    document.getElementById('editSchoolName').value = schoolInfo.name;
+    document.getElementById('editSchoolAddress').value = schoolInfo.address;
+    document.getElementById('editSchoolContact').value = schoolInfo.contact;
+    document.getElementById('editSchoolMotto').value = schoolInfo.motto;
+    document.getElementById('editReportTitle').value = schoolInfo.reportTitle;
+    
+    modal.style.display = 'block';
+}
+
+// Function to save school info
+function saveSchoolInfo() {
+    // Update the school info object
+    schoolInfo.name = document.getElementById('editSchoolName').value;
+    schoolInfo.address = document.getElementById('editSchoolAddress').value;
+    schoolInfo.contact = document.getElementById('editSchoolContact').value;
+    schoolInfo.motto = document.getElementById('editSchoolMotto').value;
+    schoolInfo.reportTitle = document.getElementById('editReportTitle').value;
+    
+    // Save to localStorage
+    localStorage.setItem('schoolInfo', JSON.stringify(schoolInfo));
+    
+    // Update the display
+    updateSchoolInfoDisplay();
+    
+    // Close the modal
+    document.getElementById('schoolInfoModal').style.display = 'none';
+}
+
+// Function to open the logo modal
+function openLogoModal() {
+    const modal = document.getElementById('logoModal');
+    
+    // Set the preview image
+    document.getElementById('logoPreview').src = schoolInfo.logo;
+    
+    modal.style.display = 'block';
+}
+
+// Function to preview the logo
+function previewLogo(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('logoPreview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Function to save the logo
+function saveLogo() {
+    // Update the school info object with the new logo
+    schoolInfo.logo = document.getElementById('logoPreview').src;
+    
+    // Save to localStorage
+    localStorage.setItem('schoolInfo', JSON.stringify(schoolInfo));
+    
+    // Update the display
+    document.getElementById('schoolLogo').src = schoolInfo.logo;
+    
+    // Close the modal
+    document.getElementById('logoModal').style.display = 'none';
+}
+
 // Generate PDF reports
 function generateAllReports() {
     const { jsPDF } = window.jspdf;
@@ -791,31 +927,33 @@ function generateStudentReport(student, jsPDF) {
     });
     
     // Header
-    doc.addImage('https://i.postimg.cc/w3CyWzCG/logo.png', 'PNG', 20, 10, 20, 20);
-    doc.setFontSize(16);
-    doc.text('Edisam Educational Complex', 105, 15, { align: 'center' });
-    doc.setFontSize(10);
-    doc.text('HEMANG-BOTANTIA P.O. BOX KJ 221 KEJETIA – KSI', 105, 20, { align: 'center' });
-    doc.text('(CONT: 0243756611/ 0556501264 / 0542162399)', 105, 25, { align: 'center' });
+    doc.addImage(schoolInfo.logo, 'JPEG', 15, 15, 30, 30);
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text(schoolInfo.name, 105, 20, { align: 'center' });
+    
     doc.setFontSize(12);
-    doc.text('IN GOD WE TRUST', 105, 30, { align: 'center' });
-    doc.setFontSize(14);
-    doc.text('CRECHE TERMINAL REPORT', 105, 40, { align: 'center' });
-    doc.setLineWidth(0.5);
-    doc.line(60, 42, 150, 42);
+    doc.setFont('helvetica', 'normal');
+    doc.text(schoolInfo.address, 105, 28, { align: 'center' });
+    doc.text(schoolInfo.contact, 105, 36, { align: 'center' });
+    
+    doc.setFont('helvetica', 'bold');
+    doc.text(schoolInfo.motto, 105, 44, { align: 'center' });
+    
+    doc.text(schoolInfo.reportTitle, 105, 52, { align: 'center' });
     
     // Student Info
     doc.setFontSize(12);
-    doc.text(`Name: ${student.name}`, 20, 50);
-    doc.text(`Adm. No: ${student.admissionNo}`, 20, 55);
-    doc.text(`Class: ${crecheClassSelect.value}`, 20, 60);
-    doc.text(`Academic Year: ${academicYearSelect.value}`, 120, 50);
-    doc.text(`Term: ${document.getElementById('term').value}`, 120, 55);
-    doc.text(`Attendance: ${student.attendance}/${totalAttendanceInput.value}`, 120, 60);
+    doc.text(`Name: ${student.name}`, 20, 60);
+    doc.text(`Adm. No: ${student.admissionNo}`, 20, 65);
+    doc.text(`Class: ${crecheClassSelect.value}`, 20, 70);
+    doc.text(`Academic Year: ${academicYearSelect.value}`, 120, 60);
+    doc.text(`Term: ${document.getElementById('term').value}`, 120, 65);
+    doc.text(`Attendance: ${student.attendance}/${totalAttendanceInput.value}`, 120, 70);
     
     // Activities
     doc.setFontSize(14);
-    doc.text('ACTIVITIES', 105, 70, { align: 'center' });
+    doc.text('ACTIVITIES', 105, 80, { align: 'center' });
     
     const activityData = [];
     activities.forEach(activity => {
@@ -823,7 +961,7 @@ function generateStudentReport(student, jsPDF) {
     });
     
     doc.autoTable({
-        startY: 75,
+        startY: 85,
         head: [['Activity', 'Performance']],
         body: activityData,
         theme: 'grid',
@@ -906,13 +1044,17 @@ function generateStudentReport(student, jsPDF) {
 }
 
 // Initialize the application
-function init() {
+document.addEventListener('DOMContentLoaded', function() {
+    initializeModals();
+    loadSchoolInfo();
+    editSchoolInfoBtn.addEventListener('click', openSchoolInfoModal);
+    saveSchoolInfoBtn.addEventListener('click', saveSchoolInfo);
+    changeLogoBtn.addEventListener('click', openLogoModal);
+    saveLogoBtn.addEventListener('click', saveLogo);
+    logoUpload.addEventListener('change', previewLogo);
     initAcademicYearDropdown();
     
     // Set up event listeners for form inputs
     noOnRollInput.addEventListener('change', populateTable);
     startingAdmissionNoInput.addEventListener('change', populateTable);
-}
-
-// Initialize the app when the DOM is loaded
-document.addEventListener('DOMContentLoaded', init);
+});

@@ -14,13 +14,15 @@
         <div class="header-container">
             <div class="logo-container">
                 <img id="schoolLogo" src="https://i.postimg.cc/w3CyWzCG/logo.png" alt="School Logo">
+                <button id="changeLogoBtn" class="btn btn-small">Change Logo</button>
             </div>
             <div class="school-info">
-                <h1>Edisam Educational Complex</h1>
-                <p>HEMANG-BOTANTIA P.O. BOX KJ 221 KEJETIA – KSI</p>
-                <p>(CONT: 0243756611/ 0556501264 / 0542162399)</p>
-                <p><strong>IN GOD WE TRUST</strong></p>
-                <h2><u>CRECHE TERMINAL REPORT</u></h2>
+                <h1 id="schoolName">Edisam Educational Complex</h1>
+                <p id="schoolAddress">HEMANG-BOTANTIA P.O. BOX KJ 221 KEJETIA – KSI</p>
+                <p id="schoolContact">(CONT: 0243756611/ 0556501264 / 0542162399)</p>
+                <p><strong id="schoolMotto">IN GOD WE TRUST</strong></p>
+                <h2><u id="reportTitle">CRECHE TERMINAL REPORT</u></h2>
+                <button id="editSchoolInfoBtn" class="btn btn-small">Edit School Info</button>
             </div>
         </div>
         
@@ -232,6 +234,50 @@
                 <input type="file" id="signatureUpload" accept="image/*">
                 <button id="uploadSignatureBtn" class="btn">Upload Signature</button>
             </div>
+        </div>
+    </div>
+
+    <!-- School Info Edit Modal -->
+    <div id="schoolInfoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit School Information</h2>
+            <div class="form-grid">
+                <div>
+                    <label for="editSchoolName">School Name:</label>
+                    <input type="text" id="editSchoolName" class="input">
+                </div>
+                <div>
+                    <label for="editSchoolAddress">School Address:</label>
+                    <input type="text" id="editSchoolAddress" class="input">
+                </div>
+                <div>
+                    <label for="editSchoolContact">Contact Information:</label>
+                    <input type="text" id="editSchoolContact" class="input">
+                </div>
+                <div>
+                    <label for="editSchoolMotto">School Motto:</label>
+                    <input type="text" id="editSchoolMotto" class="input">
+                </div>
+                <div>
+                    <label for="editReportTitle">Report Title:</label>
+                    <input type="text" id="editReportTitle" class="input">
+                </div>
+            </div>
+            <button id="saveSchoolInfoBtn" class="btn">Save Changes</button>
+        </div>
+    </div>
+
+    <!-- Logo Change Modal -->
+    <div id="logoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Change School Logo</h2>
+            <div class="logo-upload-container">
+                <img id="logoPreview" src="" alt="Logo Preview" style="max-width: 200px; max-height: 200px; margin-bottom: 15px;">
+                <input type="file" id="logoUpload" accept="image/*">
+            </div>
+            <button id="saveLogoBtn" class="btn">Save Logo</button>
         </div>
     </div>
 
