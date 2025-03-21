@@ -1,0 +1,21 @@
+{
+  "name": "creche-reports",
+  "version": "1.0.0",
+  "description": "A web application for generating terminal reports for creche students",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve",
+    "build": "echo 'No build step required for static site'"
+  },
+  "keywords": [
+    "creche",
+    "reports",
+    "education",
+    "pdf"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
